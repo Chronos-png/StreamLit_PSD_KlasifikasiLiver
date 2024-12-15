@@ -48,7 +48,7 @@ if menu == "Demo":
         st.dataframe(df)
 
         # Missing Value Check
-        st.write("## Missing Value Check")
+        st.write("## Cek Missing Value")
         st.write(df.isnull().sum())
 
         # Handle Missing Values
@@ -69,6 +69,7 @@ if menu == "Demo":
         data_transformasi['Dataset'] = data_transformasi['Dataset'].map({2: 0, 1: 1})
 
         st.write("## Data After Transformation")
+        st.write("Transformasi data yang dilakukan adalah Label Encoding terhadap atribut gender yang akan merubah kolom tersebut sehingga menjadi dua kolom berbeda yang memiliki label berupa isi kategori yang terdapat pada fitur gender dan mengisinya dengan nilai biner 0 dan 1.")
         st.dataframe(data_transformasi.head())
 
         # Normalization
