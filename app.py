@@ -75,7 +75,7 @@ if menu == "Demo":
 
         # Neural Network
         st.subheader("Neural Network (Backpropagation)")
-        nn_model = load_model('model_keras.h5')
+        nn_model = load_model('nn_model74.h5')
         nn_y_pred = (nn_model.predict(X_test) > 0.5).astype(int).flatten()
         display_metrics(y_test, nn_y_pred, 'Neural Network (Backpropagation)')
 
@@ -118,7 +118,7 @@ elif menu == "Prediction":
         rf_model = joblib.load('rf_model73.pkl')
         # Neural Network
         st.subheader("Neural Network (Backpropagation)")
-        nn_model = load_model('model_keras.h5')
+        nn_model = load_model('nn_model74.h5')
 
         input_scaled = scaler.transform(input_data)
 
