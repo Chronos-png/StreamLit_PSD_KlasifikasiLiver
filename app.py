@@ -19,14 +19,11 @@ st.title("Liver Disease Prediction")
 # Sidebar menu
 menu = st.sidebar.selectbox("Menu", ["Demo", "Prediction"])
 
-file_path = 'indian_liver_patient.csv'
 
 def display_metrics(y_test, y_pred, title):
     fig, ax = plt.subplots(1, figsize=(15, 5))
-
     sns.heatmap(confusion_matrix(y_test, y_pred), annot=True, fmt='d', ax=ax, cmap='Blues')
     ax.set_title(title)
-
     st.pyplot(fig)
 
     accuracy = accuracy_score(y_test, y_pred)
@@ -40,47 +37,25 @@ def display_metrics(y_test, y_pred, title):
     st.write(f"- **Recall**: {recall:.2f}")
     st.write(f"- **F1 Score**: {f1:.2f}")
 
+
 if menu == "Demo":
     try:
         # Load File from Local Folder
-        df = pd.read_csv(file_path)
+        df = pd.read_csv('indian_liver_patient.csv')
         st.write("## Dataset Mentahan")
-        st.write("Dataset yang digunakan pada penelitian ini adalah dataset Indian Liver Patient Dataset dengan jumlah 583 records yang merupakan data rekam medis pasien liver di India. Dataset ini memiliki 10 fitur dan 1 target.")
         st.dataframe(df)
 
         # Missing Value Check
-        st.write("## Cek Missing Value")
-        st.write(df.isnull().sum())
-
-        # Handle Missing Values
-        st.write("## Handle Missing Values ( Modus )")
-        st.write("Dalam mengatasi missing value, saya menggunakan teknik imputasi sederhana dengan menggunakan modus")
-        col1, col2 = st.columns(2)
-        with col1:
-            data_terisi = df.apply(lambda x: x.fillna(x.mode()[0]), axis=0)
-            st.subheader("Data Setelah Missing Value Diisi")
-            st.write(data_terisi.isnull().sum())
-        with col2:
-            st.subheader("Data Sekarang")
-            st.dataframe(df)
-
-        # Transform Data
+        data_terisi = df.apply(lambda x: x.fillna(x.mode()[0]), axis=0)
         data_transformasi = data_terisi.copy()
         data_transformasi['Gender'] = data_transformasi['Gender'].map({'Female': 0, 'Male': 1})
         data_transformasi['Dataset'] = data_transformasi['Dataset'].map({2: 0, 1: 1})
-
-        st.write("## Data After Transformation")
-        st.write("Transformasi data yang dilakukan adalah Label Encoding terhadap atribut gender yang akan merubah kolom tersebut sehingga menjadi dua kolom berbeda yang memiliki label berupa isi kategori yang terdapat pada fitur gender dan mengisinya dengan nilai biner 0 dan 1.")
-        st.dataframe(data_transformasi.head())
 
         # Normalization
         X = data_transformasi.drop('Dataset', axis=1)
         y = data_transformasi['Dataset']
         scaler = StandardScaler()
         x_normalized = scaler.fit_transform(X)
-        x_normalized = pd.DataFrame(x_normalized, columns=X.columns)
-
-        # Split Data
         X_train, X_test, y_train, y_test = train_test_split(x_normalized, y, test_size=0.2, random_state=42)
 
         # SMOTE
@@ -88,53 +63,30 @@ if menu == "Demo":
         X_train, y_train = smote.fit_resample(X_train, y_train)
 
         # Logistic Regression
-        st.write("## Hasil Klasifikasi")
         st.subheader("Logistic Regression")
-        # lr_model = LogisticRegression()
-        # lr_model.fit(X_train, y_train)
-        # lr_y_test_hat = lr_model.predict(X_test)
-
         model_path = 'path/to/lr_model65.pkl'
         with open(model_path, 'rb') as file:
             lr_model = pickle.load(file)
         lr_y_test_hat = lr_model.predict(X_test)
-
         display_metrics(y_test, lr_y_test_hat, 'Logistic Regression')
 
         # Random Forest
         st.subheader("Random Forest")
-        # rf_model = RandomForestClassifier(n_estimators=100, random_state=42)
-        # rf_model.fit(X_train, y_train)
-        # rf_y_test_hat = rf_model.predict(X_test)
-
         model_path = 'path/to/rf_model73.pkl'
         with open(model_path, 'rb') as file:
             rf_model = pickle.load(file)
         rf_y_test_hat = rf_model.predict(X_test)
-
         display_metrics(y_test, rf_y_test_hat, 'Random Forest')
 
         # Neural Network
         st.subheader("JST Backpropagation")
-        # nn_model = Sequential([
-        #     Dense(64, activation='relu', input_dim=X_train.shape[1]),
-        #     Dense(32, activation='relu'),
-        #     Dense(16, activation='relu'),
-        #     Dense(1, activation='sigmoid')
-        # ])
-        # nn_model.compile(optimizer=Adam(),
-        #                  loss='binary_crossentropy',
-        #                  metrics=['accuracy'])
-        # nn_model.fit(X_train, y_train, epochs=10, batch_size=32, verbose=0)
-
         model_path = 'path/to/model_keras.h5'
         nn_model = load_model(model_path)
-
         nn_y_pred = (nn_model.predict(X_test) > 0.5).astype(int)
         display_metrics(y_test, nn_y_pred, 'JST Backpropagation')
 
-    except FileNotFoundError:
-        st.error(f"File {file_path} not found. Please make sure the file is in the same folder.")
+    except FileNotFoundError as e:
+        st.error(f"File not found. Make sure all required files are available: {e}")
 
 elif menu == "Prediction":
     st.write("## Prediction Form")
@@ -148,7 +100,6 @@ elif menu == "Prediction":
         alanine_aminotransferase = st.number_input("Alanine Aminotransferase", min_value=0, value=20)
         total_proteins = st.number_input("Total Proteins", min_value=0.0, value=6.5)
         albumin_and_globulin_ratio = st.number_input("Albumin and Globulin Ratio", min_value=0.0, value=1.0)
-
         model_choice = st.selectbox("Select Model", ["Logistic Regression", "Random Forest", "JST Backpropagation"])
         submit_button = st.form_submit_button("Predict")
 
@@ -165,18 +116,21 @@ elif menu == "Prediction":
         })
 
         scaler = StandardScaler()
-
-        input_scaled = scaler.transform(input_data)
-
+        # Logistic Regression
         model_path = 'path/to/lr_model65.pkl'
         with open(model_path, 'rb') as file:
             lr_model = pickle.load(file)
+
+        # Random Forest
         model_path = 'path/to/rf_model73.pkl'
         with open(model_path, 'rb') as file:
             rf_model = pickle.load(file)
+
+        # Neural Network
         model_path = 'path/to/model_keras.h5'
         nn_model = load_model(model_path)
 
+        input_scaled = scaler.transform(input_data)
 
         if model_choice == "Logistic Regression":
             prediction = lr_model.predict(input_scaled)[0]
@@ -186,6 +140,5 @@ elif menu == "Prediction":
             prediction = (nn_model.predict(input_scaled) > 0.5).astype(int)[0][0]
 
         prediction_result = "Positive for Liver Disease" if prediction == 1 else "Negative for Liver Disease"
-
         st.write("### Prediction Result")
         st.write(prediction_result)
