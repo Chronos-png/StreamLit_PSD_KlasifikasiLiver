@@ -81,7 +81,8 @@ if menu == "Demo":
         # SMOTE
         smote = SMOTE()
         X_train, y_train = smote.fit_resample(X_train, y_train)
-
+        
+        st.write(f"### Hasil Klasifikasi")
         # Logistic Regression
         st.subheader("Logistic Regression")
         lr_model = joblib.load('lr_model65.pkl')
