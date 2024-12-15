@@ -45,11 +45,22 @@ if menu == "Demo":
         st.dataframe(df)
 
         # Missing Value Check
+        st.write("## Missing Value Check")
+        st.write(df.isnull().sum())
+
+        # Handle Missing Values
         data_terisi = df.apply(lambda x: x.fillna(x.mode()[0]), axis=0)
+        st.write("## Data After Handling Missing Values")
+        st.write(data_terisi.isnull().sum())
+
+        # Transform Data
         data_transformasi = data_terisi.copy()
         data_transformasi['Gender'] = data_transformasi['Gender'].map({'Female': 0, 'Male': 1})
         data_transformasi['Dataset'] = data_transformasi['Dataset'].map({2: 0, 1: 1})
 
+        st.write("## Data After Transformation")
+        st.dataframe(data_transformasi.head())
+    
         # Normalization
         X = data_transformasi.drop('Dataset', axis=1)
         y = data_transformasi['Dataset']
