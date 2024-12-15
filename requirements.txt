@@ -5,3 +5,4 @@ seaborn==0.13.2
 numpy==1.26.0
 pandas==2.2.3
 scikit_learn==1.5.2
+imbalanced-learn==0.12.4
