@@ -124,7 +124,7 @@ elif menu == "Prediction":
         # Neural Network
         nn_model = load_model('nn_model74.h5')
 
-        input_scaled = scaler.transform(input_data)
+        input_scaled = scaler.fit(input_data)
 
         if model_choice == "Logistic Regression":
             prediction = lr_model.predict(input_scaled)[0]
