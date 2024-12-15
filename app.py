@@ -20,7 +20,13 @@ menu = st.sidebar.selectbox("Menu", ["Demo", "Prediction"])
 
 file_path = 'indian_liver_patient.csv'
 
-def display_metrics(y_test, y_pred):
+def display_metrics(y_test, y_pred, title):
+    fig, ax = plt.subplots(1, 3, figsize=(15, 5))
+
+    sns.heatmap(confusion_matrix(y_test, lr_y_test_hat), annot=True, fmt='d', ax=ax[0], cmap='Blues')
+    ax[0].set_title(title)
+    st.pyplot(fig)
+
     accuracy = accuracy_score(y_test, y_pred)
     precision = precision_score(y_test, y_pred)
     recall = recall_score(y_test, y_pred)
@@ -83,7 +89,7 @@ if menu == "Demo":
 
         st.write("### Model Architecture")
         st.write(lr_model)
-        display_metrics(y_test, lr_y_test_hat)
+        display_metrics(y_test, lr_y_test_hat, 'Logistic Regression')
 
         # Random Forest
         st.write("## Random Forest")
@@ -93,10 +99,10 @@ if menu == "Demo":
 
         st.write("### Model Architecture")
         st.write(rf_model)
-        display_metrics(y_test, rf_y_test_hat)
+        display_metrics(y_test, rf_y_test_hat, 'Random Forest')
 
         # Neural Network
-        st.write("## Neural Network")
+        st.write("## JST Backpropagation")
         nn_model = Sequential([
             Dense(64, activation='relu', input_dim=X_train.shape[1]),
             Dense(32, activation='relu'),
@@ -117,22 +123,8 @@ if menu == "Demo":
             st.write(f"- Name: {layer_config['name']}")
             st.write(f"- Units: {layer_config.get('units', 'N/A')}")
             st.write(f"- Activation: {layer_config.get('activation', 'N/A')}")
-        display_metrics(y_test, nn_y_pred)
+        display_metrics(y_test, nn_y_pred, 'JST Backpropagation')
 
-        # Visualization
-        st.write("## Confusion Matrix")
-        fig, ax = plt.subplots(1, 3, figsize=(15, 5))
-
-        sns.heatmap(confusion_matrix(y_test, lr_y_test_hat), annot=True, fmt='d', ax=ax[0], cmap='Blues')
-        ax[0].set_title('Logistic Regression')
-
-        sns.heatmap(confusion_matrix(y_test, rf_y_test_hat), annot=True, fmt='d', ax=ax[1], cmap='Greens')
-        ax[1].set_title('Random Forest')
-
-        sns.heatmap(confusion_matrix(y_test, nn_y_pred), annot=True, fmt='d', ax=ax[2], cmap='Reds')
-        ax[2].set_title('Neural Network')
-
-        st.pyplot(fig)
     except FileNotFoundError:
         st.error(f"File {file_path} not found. Please make sure the file is in the same folder.")
 
