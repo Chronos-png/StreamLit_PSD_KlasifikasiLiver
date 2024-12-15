@@ -44,6 +44,7 @@ if menu == "Demo":
         # Load File from Local Folder
         df = pd.read_csv(file_path)
         st.write("## Dataset Mentahan")
+        st.write("Dataset yang digunakan pada penelitian ini adalah dataset Indian Liver Patient Dataset dengan jumlah 583 records yang merupakan data rekam medis pasien liver di India. Dataset ini memiliki 10 fitur dan 1 target.")
         st.dataframe(df)
 
         # Missing Value Check
