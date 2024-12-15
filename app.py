@@ -15,10 +15,10 @@ from imblearn.over_sampling import SMOTE
 # Streamlit UI
 st.title("Liver Disease Prediction")
 
-# Upload File
-uploaded_file = st.file_uploader("Upload Dataset (CSV)", type="csv")
-if uploaded_file:
-    df = pd.read_csv(uploaded_file)
+# Load File from Local Folder
+file_path = 'indian_liver_patient.csv'
+try:
+    df = pd.read_csv(file_path)
     st.write("## Dataset Preview")
     st.dataframe(df.head())
 
@@ -104,3 +104,5 @@ if uploaded_file:
     ax[2].set_title('Neural Network')
 
     st.pyplot(fig)
+except FileNotFoundError:
+    st.error(f"File {file_path} not found. Please make sure the file is in the same folder.")
