@@ -12,6 +12,12 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.linear_model import LogisticRegression
 from imblearn.over_sampling import SMOTE
 
+# Global Models and Scaler
+scaler = None
+lr_model = None
+rf_model = None
+nn_model = None
+
 # Streamlit UI
 st.title("Liver Disease Prediction")
 
@@ -54,7 +60,7 @@ if menu == "Demo":
         # Handle Missing Values
         st.write("## Handle Missing Values ( Modus )")
         st.write("Dalam mengatasi missing value, saya menggunakan teknik imputasi sederhana dengan menggunakan modus")
-        col1,col2 = st.columns(2)
+        col1, col2 = st.columns(2)
         with col1:
             data_terisi = df.apply(lambda x: x.fillna(x.mode()[0]), axis=0)
             st.subheader("Data Setelah Missing Value Diisi")
