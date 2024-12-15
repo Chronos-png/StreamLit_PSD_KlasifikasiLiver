@@ -64,7 +64,7 @@ if menu == "Demo":
 
         # Logistic Regression
         st.subheader("Logistic Regression")
-        model_path = 'path/to/lr_model65.pkl'
+        model_path = 'lr_model65.pkl'
         with open(model_path, 'rb') as file:
             lr_model = pickle.load(file)
         lr_y_test_hat = lr_model.predict(X_test)
@@ -72,7 +72,7 @@ if menu == "Demo":
 
         # Random Forest
         st.subheader("Random Forest")
-        model_path = 'path/to/rf_model73.pkl'
+        model_path = 'rf_model73.pkl'
         with open(model_path, 'rb') as file:
             rf_model = pickle.load(file)
         rf_y_test_hat = rf_model.predict(X_test)
@@ -80,7 +80,7 @@ if menu == "Demo":
 
         # Neural Network
         st.subheader("JST Backpropagation")
-        model_path = 'path/to/model_keras.h5'
+        model_path = 'model_keras.h5'
         nn_model = load_model(model_path)
         nn_y_pred = (nn_model.predict(X_test) > 0.5).astype(int)
         display_metrics(y_test, nn_y_pred, 'JST Backpropagation')
@@ -117,17 +117,17 @@ elif menu == "Prediction":
 
         scaler = StandardScaler()
         # Logistic Regression
-        model_path = 'path/to/lr_model65.pkl'
+        model_path = 'lr_model65.pkl'
         with open(model_path, 'rb') as file:
             lr_model = pickle.load(file)
 
         # Random Forest
-        model_path = 'path/to/rf_model73.pkl'
+        model_path = 'rf_model73.pkl'
         with open(model_path, 'rb') as file:
             rf_model = pickle.load(file)
 
         # Neural Network
-        model_path = 'path/to/model_keras.h5'
+        model_path = 'model_keras.h5'
         nn_model = load_model(model_path)
 
         input_scaled = scaler.transform(input_data)
