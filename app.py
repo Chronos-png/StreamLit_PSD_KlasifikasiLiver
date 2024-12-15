@@ -87,7 +87,7 @@ if menu == "Demo":
         X_train, y_train = smote.fit_resample(X_train, y_train)
 
         # Logistic Regression
-        st.write("##Hasil Klasifikasi")
+        st.write("## Hasil Klasifikasi")
         st.subheader("Logistic Regression")
         lr_model = LogisticRegression()
         lr_model.fit(X_train, y_train)
