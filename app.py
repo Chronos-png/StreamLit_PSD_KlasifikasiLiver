@@ -26,7 +26,7 @@ def display_metrics(y_test, y_pred, title):
     sns.heatmap(confusion_matrix(y_test, y_pred), annot=True, fmt='d', ax=ax, cmap='Blues')
     ax.set_title(title)
 
-    plt.show()
+    st.pyplot(fig)
 
     accuracy = accuracy_score(y_test, y_pred)
     precision = precision_score(y_test, y_pred)
