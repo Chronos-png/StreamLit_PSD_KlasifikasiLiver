@@ -42,16 +42,25 @@ if menu == "Demo":
         # Load File from Local Folder
         df = pd.read_csv('indian_liver_patient.csv')
         st.write("## Dataset Mentahan")
+        st.write("Dataset yang digunakan pada penelitian ini adalah dataset Indian Liver Patient Dataset dengan jumlah 583 records yang merupakan data rekam medis pasien liver di India. Dataset ini memiliki 10 fitur dan 1 target.")
         st.dataframe(df)
 
         # Missing Value Check
-        st.write("## Missing Value Check")
+        st.write("## Cek Missing Value")
         st.write(df.isnull().sum())
 
         # Handle Missing Values
-        data_terisi = df.apply(lambda x: x.fillna(x.mode()[0]), axis=0)
-        st.write("## Data After Handling Missing Values")
-        st.write(data_terisi.isnull().sum())
+        st.write("## Handle Missing Values ( Modus )")
+        st.write("Dalam mengatasi missing value, saya menggunakan teknik imputasi sederhana dengan menggunakan modus")
+        col1,col2 = st.columns(2)
+        col1, col2 = st.columns(2)
+        with col1:
+            data_terisi = df.apply(lambda x: x.fillna(x.mode()[0]), axis=0)
+            st.subheader("Data Setelah Missing Value Diisi")
+            st.write(data_terisi.isnull().sum())
+        with col2:
+            st.subheader("Data Sekarang")
+            st.dataframe(df)
 
         # Transform Data
         data_transformasi = data_terisi.copy()
@@ -59,7 +68,8 @@ if menu == "Demo":
         data_transformasi['Dataset'] = data_transformasi['Dataset'].map({2: 0, 1: 1})
 
         st.write("## Data After Transformation")
-        st.dataframe(data_transformasi.head())
+        st.write("Transformasi data yang dilakukan adalah Label Encoding terhadap atribut gender yang akan merubah kolom tersebut sehingga menjadi dua kolom berbeda yang memiliki label berupa isi kategori yang terdapat pada fitur gender dan mengisinya dengan nilai biner 0 dan 1.")
+        st.dataframe(data_transformasi)
     
         # Normalization
         X = data_transformasi.drop('Dataset', axis=1)
