@@ -52,10 +52,12 @@ if menu == "Demo":
         st.write(df.isnull().sum())
 
         # Handle Missing Values
+        st.write("## Handle Missing Values ( Modus )")
+        st.write("Dalam mengatasi missing value, saya menggunakan teknik imputasi sederhana dengan menggunakan modus")
         col1,col2 = st.columns(2)
         with col1:
             data_terisi = df.apply(lambda x: x.fillna(x.mode()[0]), axis=0)
-            st.subheader("Data Setelah Missing Value Diisi ( Mean )")
+            st.subheader("Data Setelah Missing Value Diisi")
             st.write(data_terisi.isnull().sum())
         with col2:
             st.subheader("Data Sekarang")
