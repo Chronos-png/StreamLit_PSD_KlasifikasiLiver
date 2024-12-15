@@ -87,13 +87,12 @@ if menu == "Demo":
         X_train, y_train = smote.fit_resample(X_train, y_train)
 
         # Logistic Regression
-        st.write("## Klasifikasi")
+        st.write("##Hasil Klasifikasi")
         st.subheader("Logistic Regression")
         lr_model = LogisticRegression()
         lr_model.fit(X_train, y_train)
         lr_y_test_hat = lr_model.predict(X_test)
 
-        st.write(lr_model)
         display_metrics(y_test, lr_y_test_hat, 'Logistic Regression')
 
         # Random Forest
@@ -102,7 +101,6 @@ if menu == "Demo":
         rf_model.fit(X_train, y_train)
         rf_y_test_hat = rf_model.predict(X_test)
 
-        st.write(rf_model)
         display_metrics(y_test, rf_y_test_hat, 'Random Forest')
 
         # Neural Network
@@ -119,14 +117,6 @@ if menu == "Demo":
         nn_model.fit(X_train, y_train, epochs=10, batch_size=32, verbose=0)
 
         nn_y_pred = (nn_model.predict(X_test) > 0.5).astype(int)
-
-        st.write("### Model Architecture")
-        for i, layer in enumerate(nn_model.layers):
-            layer_config = layer.get_config()
-            st.write(f"Layer {i+1}:")
-            st.write(f"- Name: {layer_config['name']}")
-            st.write(f"- Units: {layer_config.get('units', 'N/A')}")
-            st.write(f"- Activation: {layer_config.get('activation', 'N/A')}")
         display_metrics(y_test, nn_y_pred, 'JST Backpropagation')
 
     except FileNotFoundError:
