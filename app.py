@@ -11,8 +11,7 @@ from tensorflow.keras.optimizers import Adam
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.linear_model import LogisticRegression
 from imblearn.over_sampling import SMOTE
-import pickle
-
+import joblib
 # Streamlit UI
 st.title("Liver Disease Prediction")
 
@@ -64,24 +63,19 @@ if menu == "Demo":
 
         # Logistic Regression
         st.subheader("Logistic Regression")
-        model_path = 'lr_model65.pkl'
-        with open(model_path, 'rb') as file:
-            lr_model = pickle.load(file)
+        lr_model = joblib.load('lr_model65.pkl')
         lr_y_pred = lr_model.predict(X_test)
         display_metrics(y_test, lr_y_pred, 'Logistic Regression')
 
         # Random Forest
         st.subheader("Random Forest")
-        model_path = 'rf_model73.pkl'
-        with open(model_path, 'rb') as file:
-            rf_model = pickle.load(file)
+        rf_model = joblib.load('rf_model73.pkl')
         rf_y_pred = rf_model.predict(X_test)
         display_metrics(y_test, rf_y_pred, 'Random Forest')
 
         # Neural Network
         st.subheader("Neural Network (Backpropagation)")
-        model_path = 'model_keras.h5'
-        nn_model = load_model(model_path)
+        nn_model = load_model('model_keras.h5')
         nn_y_pred = (nn_model.predict(X_test) > 0.5).astype(int).flatten()
         display_metrics(y_test, nn_y_pred, 'Neural Network (Backpropagation)')
 
@@ -117,18 +111,14 @@ elif menu == "Prediction":
 
         scaler = StandardScaler()
         # Logistic Regression
-        model_path = 'lr_model65.pkl'
-        with open(model_path, 'rb') as file:
-            lr_model = pickle.load(file)
-
+        st.subheader("Logistic Regression")
+        lr_model = joblib.load('lr_model65.pkl')
         # Random Forest
-        model_path = 'rf_model73.pkl'
-        with open(model_path, 'rb') as file:
-            rf_model = pickle.load(file)
-
+        st.subheader("Random Forest")
+        rf_model = joblib.load('rf_model73.pkl')
         # Neural Network
-        model_path = 'model_keras.h5'
-        nn_model = load_model(model_path)
+        st.subheader("Neural Network (Backpropagation)")
+        nn_model = load_model('model_keras.h5')
 
         input_scaled = scaler.transform(input_data)
 
