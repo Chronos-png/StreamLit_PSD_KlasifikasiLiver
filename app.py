@@ -87,27 +87,26 @@ if menu == "Demo":
         X_train, y_train = smote.fit_resample(X_train, y_train)
 
         # Logistic Regression
-        st.write("## Logistic Regression")
+        st.write("## Klasifikasi")
+        st.subheader("Logistic Regression")
         lr_model = LogisticRegression()
         lr_model.fit(X_train, y_train)
         lr_y_test_hat = lr_model.predict(X_test)
 
-        st.write("### Model Architecture")
         st.write(lr_model)
         display_metrics(y_test, lr_y_test_hat, 'Logistic Regression')
 
         # Random Forest
-        st.write("## Random Forest")
+        st.subheader("Random Forest")
         rf_model = RandomForestClassifier(n_estimators=100, random_state=42)
         rf_model.fit(X_train, y_train)
         rf_y_test_hat = rf_model.predict(X_test)
 
-        st.write("### Model Architecture")
         st.write(rf_model)
         display_metrics(y_test, rf_y_test_hat, 'Random Forest')
 
         # Neural Network
-        st.write("## JST Backpropagation")
+        st.subheader("JST Backpropagation")
         nn_model = Sequential([
             Dense(64, activation='relu', input_dim=X_train.shape[1]),
             Dense(32, activation='relu'),
