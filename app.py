@@ -87,37 +87,41 @@ elif menu == "Prediction":
 
     # Form Input
     with st.form("prediction_form"):
+        age = st.number_input("Age", min_value=0, max_value=120, value=30, step=1)
         gender = st.selectbox("Gender", ["Male", "Female"])
-        age = st.number_input("Age", min_value=0, max_value=120, value=30)
-        total_bilirubin = st.number_input("Total Bilirubin", min_value=0.0, value=1.0)
-        alkaline_phosphotase = st.number_input("Alkaline Phosphotase", min_value=0, value=200)
-        alanine_aminotransferase = st.number_input("Alanine Aminotransferase", min_value=0, value=20)
-        total_proteins = st.number_input("Total Proteins", min_value=0.0, value=6.5)
-        albumin_and_globulin_ratio = st.number_input("Albumin and Globulin Ratio", min_value=0.0, value=1.0)
+        total_bilirubin = st.number_input("Total Bilirubin", min_value=0.0, value=1.0, step=0.1)
+        direct_bilirubin = st.number_input("Direct Bilirubin", min_value=0.0, value=0.5, step=0.1)
+        alkaline_phosphotase = st.number_input("Alkaline Phosphotase", min_value=0, value=250, step=1)
+        alamine_aminotransferase = st.number_input("Alamine Aminotransferase", min_value=0, value=25, step=1)
+        aspartate_aminotransferase = st.number_input("Aspartate Aminotransferase", min_value=0, value=30, step=1)
+        total_proteins = st.number_input("Total Proteins", min_value=0.0, value=6.0, step=0.1)
+        albumin = st.number_input("Albumin", min_value=0.0, value=3.5, step=0.1)
+        albumin_and_globulin_ratio = st.number_input("Albumin and Globulin Ratio", min_value=0.0, value=1.0, step=0.1)
+        
         model_choice = st.selectbox("Select Model", ["Logistic Regression", "Random Forest", "JST Backpropagation"])
         submit_button = st.form_submit_button("Predict")
 
     # Prediction Process
     if submit_button:
         input_data = pd.DataFrame({
-            "Gender": [1 if gender == "Male" else 0],
-            "Age": [age],
-            "Total_Bilirubin": [total_bilirubin],
-            "Alkaline_Phosphotase": [alkaline_phosphotase],
-            "Alanine_Aminotransferase": [alanine_aminotransferase],
-            "Total_Proteins": [total_proteins],
-            "Albumin_and_Globulin_Ratio": [albumin_and_globulin_ratio]
+        "Age": [age],
+        "Gender": [gender],
+        "Total_Bilirubin": [total_bilirubin],
+        "Direct_Bilirubin": [direct_bilirubin],
+        "Alkaline_Phosphotase": [alkaline_phosphotase],
+        "Alamine_Aminotransferase": [alamine_aminotransferase],
+        "Aspartate_Aminotransferase": [aspartate_aminotransferase],
+        "Total_Protiens": [total_proteins],
+        "Albumin": [albumin],
+        "Albumin_and_Globulin_Ratio": [albumin_and_globulin_ratio]
         })
 
         scaler = StandardScaler()
         # Logistic Regression
-        st.subheader("Logistic Regression")
         lr_model = joblib.load('lr_model65.pkl')
         # Random Forest
-        st.subheader("Random Forest")
         rf_model = joblib.load('rf_model73.pkl')
         # Neural Network
-        st.subheader("Neural Network (Backpropagation)")
         nn_model = load_model('nn_model74.h5')
 
         input_scaled = scaler.transform(input_data)
