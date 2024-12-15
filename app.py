@@ -135,6 +135,7 @@ elif menu == "Prediction":
         total_proteins = st.number_input("Total Proteins", min_value=0.0, value=6.5)
         albumin_and_globulin_ratio = st.number_input("Albumin and Globulin Ratio", min_value=0.0, value=1.0)
 
+        model_choice = st.selectbox("Select Model", ["Logistic Regression", "Random Forest", "JST Backpropagation"])
         submit_button = st.form_submit_button("Predict")
 
     # Prediction Process
@@ -151,8 +152,14 @@ elif menu == "Prediction":
 
         input_scaled = scaler.transform(input_data)
 
-        nn_prediction = (nn_model.predict(input_scaled) > 0.5).astype(int)[0][0]
-        prediction_result = "Positive for Liver Disease" if nn_prediction == 1 else "Negative for Liver Disease"
+        if model_choice == "Logistic Regression":
+            prediction = lr_model.predict(input_scaled)[0]
+        elif model_choice == "Random Forest":
+            prediction = rf_model.predict(input_scaled)[0]
+        else:
+            prediction = (nn_model.predict(input_scaled) > 0.5).astype(int)[0][0]
+
+        prediction_result = "Positive for Liver Disease" if prediction == 1 else "Negative for Liver Disease"
 
         st.write("### Prediction Result")
         st.write(prediction_result)
