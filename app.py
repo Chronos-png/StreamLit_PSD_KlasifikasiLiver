@@ -103,29 +103,33 @@ elif menu == "Prediction":
 
     # Prediction Process
     if submit_button:
+        # Prepare input data as a DataFrame
         input_data = pd.DataFrame({
-        "Age": [age],
-        "Gender": [gender],
-        "Total_Bilirubin": [total_bilirubin],
-        "Direct_Bilirubin": [direct_bilirubin],
-        "Alkaline_Phosphotase": [alkaline_phosphotase],
-        "Alamine_Aminotransferase": [alamine_aminotransferase],
-        "Aspartate_Aminotransferase": [aspartate_aminotransferase],
-        "Total_Protiens": [total_proteins],
-        "Albumin": [albumin],
-        "Albumin_and_Globulin_Ratio": [albumin_and_globulin_ratio]
+            "Age": [age],
+            "Gender": [gender],
+            "Total_Bilirubin": [total_bilirubin],
+            "Direct_Bilirubin": [direct_bilirubin],
+            "Alkaline_Phosphotase": [alkaline_phosphotase],
+            "Alamine_Aminotransferase": [alamine_aminotransferase],
+            "Aspartate_Aminotransferase": [aspartate_aminotransferase],
+            "Total_Protiens": [total_proteins],
+            "Albumin": [albumin],
+            "Albumin_and_Globulin_Ratio": [albumin_and_globulin_ratio]
         })
 
-        scaler = StandardScaler()
-        # Logistic Regression
+        # Encoding the categorical 'Gender' column
+        input_data['Gender'] = input_data['Gender'].map({"Male": 1, "Female": 0})
+
+        # Load models
         lr_model = joblib.load('lr_model65.pkl')
-        # Random Forest
         rf_model = joblib.load('rf_model73.pkl')
-        # Neural Network
         nn_model = load_model('nn_model74.h5')
 
+        # Apply StandardScaler to the input data
+        scaler = StandardScaler()
         input_scaled = scaler.fit_transform(input_data)
 
+        # Predict based on selected model
         if model_choice == "Logistic Regression":
             prediction = lr_model.predict(input_scaled)[0]
         elif model_choice == "Random Forest":
@@ -133,6 +137,8 @@ elif menu == "Prediction":
         else:
             prediction = (nn_model.predict(input_scaled) > 0.5).astype(int)[0][0]
 
+        # Display the prediction result
         prediction_result = "Positive for Liver Disease" if prediction == 1 else "Negative for Liver Disease"
         st.write("### Prediction Result")
         st.write(prediction_result)
+
