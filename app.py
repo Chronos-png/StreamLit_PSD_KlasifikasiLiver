@@ -33,11 +33,11 @@ def display_metrics(y_test, y_pred, title):
     recall = recall_score(y_test, y_pred)
     f1 = f1_score(y_test, y_pred)
 
-    print(f"### Performance Metrics")
-    print(f"- **Accuracy**: {accuracy * 100:.2f}%")
-    print(f"- **Precision**: {precision:.2f}")
-    print(f"- **Recall**: {recall:.2f}")
-    print(f"- **F1 Score**: {f1:.2f}")
+    st.write(f"### Performance Metrics")
+    st.write(f"- **Accuracy**: {accuracy * 100:.2f}%")
+    st.write(f"- **Precision**: {precision:.2f}")
+    st.write(f"- **Recall**: {recall:.2f}")
+    st.write(f"- **F1 Score**: {f1:.2f}")
 
 if menu == "Demo":
     try:
