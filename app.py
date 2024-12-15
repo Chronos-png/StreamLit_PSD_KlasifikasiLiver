@@ -67,23 +67,23 @@ if menu == "Demo":
         model_path = 'lr_model65.pkl'
         with open(model_path, 'rb') as file:
             lr_model = pickle.load(file)
-        lr_y_test_hat = lr_model.predict(X_test)
-        display_metrics(y_test, lr_y_test_hat, 'Logistic Regression')
+        lr_y_pred = lr_model.predict(X_test)
+        display_metrics(y_test, lr_y_pred, 'Logistic Regression')
 
         # Random Forest
         st.subheader("Random Forest")
         model_path = 'rf_model73.pkl'
         with open(model_path, 'rb') as file:
             rf_model = pickle.load(file)
-        rf_y_test_hat = rf_model.predict(X_test)
-        display_metrics(y_test, rf_y_test_hat, 'Random Forest')
+        rf_y_pred = rf_model.predict(X_test)
+        display_metrics(y_test, rf_y_pred, 'Random Forest')
 
         # Neural Network
-        st.subheader("JST Backpropagation")
+        st.subheader("Neural Network (Backpropagation)")
         model_path = 'model_keras.h5'
         nn_model = load_model(model_path)
-        nn_y_pred = (nn_model.predict(X_test) > 0.5).astype(int)
-        display_metrics(y_test, nn_y_pred, 'JST Backpropagation')
+        nn_y_pred = (nn_model.predict(X_test) > 0.5).astype(int).flatten()
+        display_metrics(y_test, nn_y_pred, 'Neural Network (Backpropagation)')
 
     except FileNotFoundError as e:
         st.error(f"File not found. Make sure all required files are available: {e}")
