@@ -5,18 +5,13 @@ import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 from sklearn.metrics import accuracy_score, classification_report, confusion_matrix, precision_score, recall_score, f1_score
-from tensorflow.keras.models import Sequential
+from tensorflow.keras.models import Sequential, load_model
 from tensorflow.keras.layers import Dense
 from tensorflow.keras.optimizers import Adam
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.linear_model import LogisticRegression
 from imblearn.over_sampling import SMOTE
-
-# Global Models and Scaler
-scaler = None
-lr_model = None
-rf_model = None
-nn_model = None
+import pickle
 
 # Streamlit UI
 st.title("Liver Disease Prediction")
@@ -95,32 +90,45 @@ if menu == "Demo":
         # Logistic Regression
         st.write("## Hasil Klasifikasi")
         st.subheader("Logistic Regression")
-        lr_model = LogisticRegression()
-        lr_model.fit(X_train, y_train)
+        # lr_model = LogisticRegression()
+        # lr_model.fit(X_train, y_train)
+        # lr_y_test_hat = lr_model.predict(X_test)
+
+        model_path = 'path/to/lr_model65.pkl'
+        with open(model_path, 'rb') as file:
+            lr_model = pickle.load(file)
         lr_y_test_hat = lr_model.predict(X_test)
 
         display_metrics(y_test, lr_y_test_hat, 'Logistic Regression')
 
         # Random Forest
         st.subheader("Random Forest")
-        rf_model = RandomForestClassifier(n_estimators=100, random_state=42)
-        rf_model.fit(X_train, y_train)
+        # rf_model = RandomForestClassifier(n_estimators=100, random_state=42)
+        # rf_model.fit(X_train, y_train)
+        # rf_y_test_hat = rf_model.predict(X_test)
+
+        model_path = 'path/to/rf_model73.pkl'
+        with open(model_path, 'rb') as file:
+            rf_model = pickle.load(file)
         rf_y_test_hat = rf_model.predict(X_test)
 
         display_metrics(y_test, rf_y_test_hat, 'Random Forest')
 
         # Neural Network
         st.subheader("JST Backpropagation")
-        nn_model = Sequential([
-            Dense(64, activation='relu', input_dim=X_train.shape[1]),
-            Dense(32, activation='relu'),
-            Dense(16, activation='relu'),
-            Dense(1, activation='sigmoid')
-        ])
-        nn_model.compile(optimizer=Adam(),
-                         loss='binary_crossentropy',
-                         metrics=['accuracy'])
-        nn_model.fit(X_train, y_train, epochs=10, batch_size=32, verbose=0)
+        # nn_model = Sequential([
+        #     Dense(64, activation='relu', input_dim=X_train.shape[1]),
+        #     Dense(32, activation='relu'),
+        #     Dense(16, activation='relu'),
+        #     Dense(1, activation='sigmoid')
+        # ])
+        # nn_model.compile(optimizer=Adam(),
+        #                  loss='binary_crossentropy',
+        #                  metrics=['accuracy'])
+        # nn_model.fit(X_train, y_train, epochs=10, batch_size=32, verbose=0)
+
+        model_path = 'path/to/model_keras.h5'
+        nn_model = load_model(model_path)
 
         nn_y_pred = (nn_model.predict(X_test) > 0.5).astype(int)
         display_metrics(y_test, nn_y_pred, 'JST Backpropagation')
@@ -156,7 +164,19 @@ elif menu == "Prediction":
             "Albumin_and_Globulin_Ratio": [albumin_and_globulin_ratio]
         })
 
+        scaler = StandardScaler()
+
         input_scaled = scaler.transform(input_data)
+
+        model_path = 'path/to/lr_model65.pkl'
+        with open(model_path, 'rb') as file:
+            lr_model = pickle.load(file)
+        model_path = 'path/to/rf_model73.pkl'
+        with open(model_path, 'rb') as file:
+            rf_model = pickle.load(file)
+        model_path = 'path/to/model_keras.h5'
+        nn_model = load_model(model_path)
+
 
         if model_choice == "Logistic Regression":
             prediction = lr_model.predict(input_scaled)[0]
