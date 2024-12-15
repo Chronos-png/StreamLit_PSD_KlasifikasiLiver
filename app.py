@@ -23,20 +23,21 @@ file_path = 'indian_liver_patient.csv'
 def display_metrics(y_test, y_pred, title):
     fig, ax = plt.subplots(1, figsize=(15, 5))
 
-    sns.heatmap(confusion_matrix(y_test, lr_y_test_hat), annot=True, fmt='d', ax=ax[0], cmap='Blues')
-    ax[0].set_title(title)
-    st.pyplot(fig)
+    sns.heatmap(confusion_matrix(y_test, y_pred), annot=True, fmt='d', ax=ax, cmap='Blues')
+    ax.set_title(title)
+
+    plt.show()
 
     accuracy = accuracy_score(y_test, y_pred)
     precision = precision_score(y_test, y_pred)
     recall = recall_score(y_test, y_pred)
     f1 = f1_score(y_test, y_pred)
 
-    st.write(f"### Performance Metrics")
-    st.write(f"- **Accuracy**: {accuracy * 100:.2f}%")
-    st.write(f"- **Precision**: {precision:.2f}")
-    st.write(f"- **Recall**: {recall:.2f}")
-    st.write(f"- **F1 Score**: {f1:.2f}")
+    print(f"### Performance Metrics")
+    print(f"- **Accuracy**: {accuracy * 100:.2f}%")
+    print(f"- **Precision**: {precision:.2f}")
+    print(f"- **Recall**: {recall:.2f}")
+    print(f"- **F1 Score**: {f1:.2f}")
 
 if menu == "Demo":
     try:
