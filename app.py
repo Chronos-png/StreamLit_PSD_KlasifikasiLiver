@@ -44,9 +44,14 @@ if menu == "Demo":
         st.write(df.isnull().sum())
 
         # Handle Missing Values
-        data_terisi = df.apply(lambda x: x.fillna(x.mode()[0]), axis=0)
-        st.write("## Data Setelah Missing Value Diisi ( Mean )")
-        st.write(data_terisi.isnull().sum())
+        col1,col2 = st.columns(2)
+        with col1:
+            data_terisi = df.apply(lambda x: x.fillna(x.mode()[0]), axis=0)
+            st.write("## Data Setelah Missing Value Diisi ( Mean )")
+            st.write(data_terisi.isnull().sum())
+        with col2:
+            st.write('Data Sekarang')
+            st.dataframe(df)
 
         # Transform Data
         data_transformasi = data_terisi.copy()
