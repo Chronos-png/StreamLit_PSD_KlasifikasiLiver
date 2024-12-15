@@ -20,7 +20,7 @@ file_path = 'indian_liver_patient.csv'
 try:
     df = pd.read_csv(file_path)
     st.write("## Dataset Preview")
-    st.dataframe(df.head())
+    st.dataframe(df)
 
     # Missing Value Check
     st.write("## Missing Value Check")
