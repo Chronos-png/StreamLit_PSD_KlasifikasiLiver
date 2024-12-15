@@ -35,7 +35,7 @@ try:
     data_transformasi = data_terisi.copy()
     data_transformasi['Gender'] = data_transformasi['Gender'].map({'Female': 0, 'Male': 1})
     data_transformasi['Dataset'] = data_transformasi['Dataset'].map({2: 0, 1: 1})
-    data_transformasi.drop(['Direct_Bilirubin', 'Albumin', 'Aspartate_Aminotransferase'], axis=1, inplace=True)
+    # data_transformasi.drop(['Direct_Bilirubin', 'Albumin', 'Aspartate_Aminotransferase'], axis=1, inplace=True)
 
     st.write("## Data After Transformation")
     st.dataframe(data_transformasi.head())
