@@ -21,7 +21,7 @@ menu = st.sidebar.selectbox("Menu", ["Demo", "Prediction"])
 file_path = 'indian_liver_patient.csv'
 
 def display_metrics(y_test, y_pred, title):
-    fig, ax = plt.subplots(1, 3, figsize=(15, 5))
+    fig, ax = plt.subplots(1, figsize=(15, 5))
 
     sns.heatmap(confusion_matrix(y_test, lr_y_test_hat), annot=True, fmt='d', ax=ax[0], cmap='Blues')
     ax[0].set_title(title)
