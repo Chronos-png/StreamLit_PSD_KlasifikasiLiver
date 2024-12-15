@@ -16,7 +16,7 @@ from imblearn.over_sampling import SMOTE
 st.title("Liver Disease Prediction")
 
 # Sidebar menu
-menu = st.sidebar(["Demo", "Prediction"])
+menu = st.sidebar.selectbox("Menu", ["Demo", "Prediction"])
 
 file_path = 'indian_liver_patient.csv'
 
